@@ -1,0 +1,91 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+}
+
+.app {
+  display: flex;
+  min-height: 100vh;
+  background: #f4f6fb;
+}
+
+.sidebar {
+  width: 240px;
+  background: linear-gradient(180deg, #a4b0b0cb, #404645);
+  color: white;
+  padding: 24px;
+}
+
+.logo {
+  margin-bottom: 32px;
+}
+
+nav a {
+  display: block;
+  padding: 12px;
+  margin-bottom: 8px;
+  border-radius: 10px;
+  cursor: pointer;
+  opacity: 0.9;
+}
+
+nav a.active,
+nav a:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.main {
+  flex: 1;
+  padding: 24px;
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.topbar input {
+  width: 260px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  border: none;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.card {
+  background: white;
+  padding: 20px;
+  border-radius: 18px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+.card p {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.table-card {
+  background: white;
+  padding: 20px;
+  border-radius: 18px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table th,
+ table td {
+  padding: 14px;
+  text-align: left;
+}
+
+

@@ -22,6 +22,6 @@ public class Student {
     private Integer age;
 
     @ManyToOne
-    @JoinColumn(name = "program_id", nullable = false)
+    @JoinColumn(name = "program_id")
     private Program program;
 }

@@ -1,5 +1,6 @@
 package com.sbuda.sbuda.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,5 +21,6 @@ public class Program {
     private String name;
 
     @OneToMany(mappedBy = "program")
+    @JsonIgnore
     private Set<Student> students = new HashSet<>();
 }
