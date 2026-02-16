@@ -4,6 +4,4 @@ public enum TechType {
     LANGUAGE,
     FRAMEWORK,
     DATABASE,
-    LIBRARY,
-    TOOL
 }
