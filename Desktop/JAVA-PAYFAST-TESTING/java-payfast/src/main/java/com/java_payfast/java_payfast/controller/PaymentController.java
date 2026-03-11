@@ -3,13 +3,13 @@ package com.java_payfast.java_payfast.controller;
 import com.java_payfast.java_payfast.dto.PaymentFormData;
 import com.java_payfast.java_payfast.dto.PaymentRequest;
 import com.java_payfast.java_payfast.service.PayfastService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -26,11 +26,20 @@ public class PaymentController {
         return ResponseEntity.ok(formData);
     }
 
-    @PostMapping("/notify")
-    public ResponseEntity<String> handleItn(@RequestParam Map<String, String> itnParams) {
-        log.info("ITN notification received");
-        LinkedHashMap<String, String> orderedParams = new LinkedHashMap<>(itnParams);
-        boolean success = payfastService.handleItn(orderedParams);
-        return success ? ResponseEntity.ok("OK") : ResponseEntity.badRequest().body("FAILED");
+    @PostMapping(
+            value = "/notify",
+            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
+    )
+    public ResponseEntity<String> handleItn(@RequestBody String rawBody, HttpServletRequest request) {
+        String remoteAddr = request.getRemoteAddr();
+        log.info("ITN notification received from IP: {}", remoteAddr);
+
+        boolean success = payfastService.handleItn(rawBody, remoteAddr);
+
+        if (!success) {
+            log.warn("ITN processing failed, but returning 200 to acknowledge receipt");
+        }
+
+        return ResponseEntity.ok(success ? "OK" : "FAILED");
     }
 }

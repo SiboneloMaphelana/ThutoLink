@@ -10,7 +10,8 @@ import java.util.stream.Collectors;
 
 public final class PayfastSignatureUtil {
 
-    private PayfastSignatureUtil() {}
+    private PayfastSignatureUtil() {
+    }
 
     public static String generateSignature(LinkedHashMap<String, String> data, String passphrase) {
         String paramString = data.entrySet().stream()
@@ -25,16 +26,26 @@ public final class PayfastSignatureUtil {
         return md5(paramString);
     }
 
-    public static boolean verifySignature(Map<String, String> data, String passphrase, String receivedSignature) {
-        LinkedHashMap<String, String> filteredData = new LinkedHashMap<>();
-        data.forEach((key, value) -> {
-            if (!"signature".equals(key) && value != null && !value.isBlank()) {
-                filteredData.put(key, value);
-            }
-        });
+    public static boolean verifySignature(LinkedHashMap<String, String> data,
+                                          String passphrase,
+                                          String receivedSignature) {
+        String calculatedSignature = generateSignature(data, passphrase);
 
-        String calculatedSignature = generateSignature(filteredData, passphrase);
-        return calculatedSignature.equals(receivedSignature);
+        return MessageDigest.isEqual(
+                calculatedSignature.getBytes(StandardCharsets.UTF_8),
+                receivedSignature.trim().toLowerCase().getBytes(StandardCharsets.UTF_8)
+        );
+    }
+
+    /**
+     * Builds the validation payload exactly as posted, excluding the signature field.
+     * Useful for server-to-server ITN confirmation.
+     */
+    public static String toValidationPayload(LinkedHashMap<String, String> data) {
+        return data.entrySet().stream()
+                .filter(e -> !"signature".equals(e.getKey()))
+                .map(e -> e.getKey() + "=" + urlEncode(e.getValue() == null ? "" : e.getValue().trim()))
+                .collect(Collectors.joining("&"));
     }
 
     private static String urlEncode(String value) {
@@ -51,7 +62,7 @@ public final class PayfastSignatureUtil {
             }
             return sb.toString();
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("MD5 algorithm not available", e);
+            throw new IllegalStateException("MD5 algorithm not available", e);
         }
     }
 }
