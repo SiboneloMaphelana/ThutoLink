@@ -1,18 +1,14 @@
-import { Injectable, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { DestinationRecommendation } from '../models/trip.model';
 import { StorageService } from './storage.service';
 
 @Injectable({ providedIn: 'root' })
 export class FavoritesService {
+  private readonly storage = inject(StorageService);
   private readonly storageKey = 'escapescout_favorites';
-  private readonly favoritesSignal;
-
-  constructor(private readonly storage: StorageService) {
-    this.favoritesSignal = signal<DestinationRecommendation[]>(
-      this.storage.get<DestinationRecommendation[]>(this.storageKey) ?? []
-    );
-  }
-
+  private readonly favoritesSignal = signal<DestinationRecommendation[]>(
+    this.storage.get<DestinationRecommendation[]>(this.storageKey) ?? []
+  );
   readonly favorites = this.favoritesSignal.asReadonly();
 
   saveTrip(trip: DestinationRecommendation): void {

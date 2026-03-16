@@ -65,7 +65,7 @@
         </div>
 
         <div class="card-actions">
-          <a class="btn btn-primary" [routerLink]="['/destinations', result.id]">View details</a>
+          <a class="btn btn-primary" [routerLink]="['/destination', result.id]">View details</a>
           <button class="btn btn-secondary" type="button" (click)="toggleFavorite(result)">
             {{ isFavorite(result.id) ? 'Remove saved' : 'Save trip' }}
           </button>

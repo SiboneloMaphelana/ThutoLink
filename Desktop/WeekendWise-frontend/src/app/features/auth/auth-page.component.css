@@ -1,27 +1,36 @@
 .auth-page {
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
-  gap: 28px;
+  grid-template-columns: 0.95fr 1.05fr;
+  gap: 48px;
   align-items: center;
 }
 
+.auth-copy .pill {
+  color: var(--primary);
+  background: var(--primary-muted);
+  border-color: transparent;
+}
+
 .auth-copy h1 {
-  margin: 16px 0 12px;
-  font-size: clamp(2.1rem, 4vw, 3.6rem);
-  line-height: 1.08;
+  margin: 18px 0 14px;
+  font-size: clamp(2.2rem, 4vw, 3.4rem);
+  font-weight: 700;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
 }
 
 .auth-copy p {
-  color: var(--muted);
-  line-height: 1.8;
-  max-width: 46ch;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  max-width: 44ch;
+  font-size: 1.05rem;
 }
 
 .auth-card {
-  padding: 24px;
+  padding: 32px;
   display: grid;
-  gap: 16px;
+  gap: 20px;
 }
 
 .field-row {
@@ -31,16 +40,23 @@
 }
 
 .auth-submit {
-  margin-top: 6px;
+  margin-top: 8px;
 }
 
 .auth-link {
   margin: 0;
-  color: var(--muted);
+  color: var(--text-secondary);
+  font-size: 0.95rem;
 }
 
 .auth-link a {
   color: var(--primary);
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.auth-link a:hover {
+  color: var(--primary-hover);
 }
 
 @media (max-width: 900px) {
@@ -50,6 +66,7 @@
   }
 
   .auth-page {
-    padding: 40px 0;
+    padding: 48px 0;
+    gap: 36px;
   }
 }

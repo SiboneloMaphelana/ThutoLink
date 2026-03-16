@@ -1,90 +1,123 @@
 .results-page {
-  padding: 30px 0 48px;
+  padding: 40px 0 56px;
 }
 
 .results-header {
   display: flex;
   justify-content: space-between;
   gap: 24px;
-  align-items: end;
-  margin-bottom: 24px;
+  align-items: flex-end;
+  margin-bottom: 28px;
+}
+
+.results-header .pill {
+  color: var(--primary);
+  background: var(--primary-muted);
+  border-color: transparent;
 }
 
 .results-header h1 {
-  margin: 14px 0 8px;
-  font-size: 2.3rem;
+  margin: 12px 0 8px;
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .results-header p {
   margin: 0;
-  color: var(--muted);
+  color: var(--text-secondary);
+  font-size: 0.95rem;
 }
 
 .sort-group {
   display: inline-flex;
   padding: 6px;
   gap: 6px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
 }
 
 .sort-group button {
   border: 0;
-  border-radius: 999px;
-  padding: 10px 14px;
+  border-radius: var(--radius-full);
+  padding: 10px 18px;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 500;
   background: transparent;
-  color: var(--muted);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.sort-group button:hover {
+  color: var(--text);
 }
 
 .sort-group button.active {
-  background: rgba(73, 198, 229, 0.16);
-  color: var(--text);
+  background: var(--primary-muted);
+  color: var(--primary);
 }
 
 .results-grid {
   display: grid;
-  gap: 20px;
+  gap: 24px;
 }
 
 .destination-card {
   display: grid;
-  grid-template-columns: 280px 1fr;
+  grid-template-columns: 300px 1fr;
   overflow: hidden;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.destination-card:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-lg);
 }
 
 .destination-image {
   width: 100%;
   height: 100%;
+  min-height: 220px;
   object-fit: cover;
 }
 
 .destination-content {
-  padding: 22px;
+  padding: 24px;
 }
 
 .destination-topline {
   display: flex;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
 }
 
 .destination-topline h2 {
-  margin: 0 0 8px;
+  margin: 0 0 6px;
+  font-size: 1.35rem;
+  font-weight: 600;
 }
 
 .destination-topline p {
   margin: 0;
-  color: var(--muted);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
 }
 
 .score-chip {
-  min-width: 56px;
-  height: 56px;
+  flex-shrink: 0;
+  min-width: 52px;
+  height: 52px;
   border-radius: 50%;
   display: grid;
   place-items: center;
-  background: rgba(76, 185, 68, 0.18);
-  color: #8fe686;
-  font-weight: 800;
+  background: var(--success-muted);
+  color: var(--success);
+  font-weight: 700;
+  font-size: 1rem;
 }
 
 .price-summary,
@@ -95,14 +128,15 @@
 }
 
 .price-summary {
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .price-summary div,
 .detail-grid div {
   padding: 16px;
-  background: rgba(255, 255, 255, 0.04);
-  border-radius: 14px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
 }
 
 .price-summary span,
@@ -110,12 +144,14 @@
 .detail-grid span {
   display: block;
   color: var(--muted);
+  font-size: 0.8rem;
 }
 
 .price-summary strong,
 .detail-grid strong {
   display: block;
   margin-top: 6px;
+  font-size: 1rem;
 }
 
 .attractions {
@@ -125,10 +161,16 @@
   margin-top: 18px;
 }
 
+.attractions .pill {
+  font-size: 0.75rem;
+  padding: 6px 12px;
+  background: var(--surface-hover);
+}
+
 .card-actions {
   display: flex;
   gap: 12px;
-  margin-top: 20px;
+  margin-top: 22px;
 }
 
 @media (max-width: 960px) {
@@ -137,7 +179,7 @@
   }
 
   .destination-image {
-    height: 220px;
+    height: 240px;
   }
 
   .results-header {

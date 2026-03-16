@@ -17,7 +17,7 @@
         <p>{{ trip.weatherSummary }}</p>
         <strong>{{ trip.totalEstimatedCost | currency:'ZAR':'symbol':'1.0-0' }}</strong>
         <div class="favorite-actions">
-          <a class="btn btn-primary" [routerLink]="['/destinations', trip.id]">View trip</a>
+          <a class="btn btn-primary" [routerLink]="['/destination', trip.id]">View trip</a>
           <button class="btn btn-secondary" type="button" (click)="remove(trip.id)">Remove</button>
         </div>
       </div>

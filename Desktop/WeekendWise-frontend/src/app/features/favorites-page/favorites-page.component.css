@@ -1,60 +1,87 @@
 .favorites-page {
-  padding: 30px 0 48px;
+  padding: 40px 0 56px;
 }
 
 .favorites-header {
-  margin-bottom: 24px;
+  margin-bottom: 28px;
+}
+
+.favorites-header .pill {
+  color: var(--primary);
+  background: var(--primary-muted);
+  border-color: transparent;
 }
 
 .favorites-header h1 {
-  margin: 14px 0 8px;
+  margin: 12px 0 8px;
   font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
 }
 
 .favorites-header p {
   margin: 0;
-  color: var(--muted);
+  color: var(--text-secondary);
+  font-size: 0.95rem;
 }
 
 .favorites-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+  gap: 24px;
 }
 
 .favorite-card {
   display: grid;
-  grid-template-columns: 180px 1fr;
-  gap: 18px;
-  padding: 18px;
+  grid-template-columns: 200px 1fr;
+  gap: 20px;
+  padding: 20px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.favorite-card:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-lg);
 }
 
 .favorite-card img {
   width: 100%;
   height: 100%;
-  min-height: 180px;
+  min-height: 160px;
   object-fit: cover;
-  border-radius: 16px;
+  border-radius: var(--radius-md);
 }
 
 .favorite-card h2 {
   margin: 0 0 8px;
+  font-size: 1.2rem;
+  font-weight: 600;
 }
 
 .favorite-card p {
   margin: 0 0 12px;
-  color: var(--muted);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.favorite-card strong {
+  color: var(--primary);
+  font-size: 1.1rem;
 }
 
 .favorite-actions {
   display: flex;
   gap: 12px;
-  margin-top: 18px;
+  margin-top: 20px;
 }
 
 @media (max-width: 960px) {
   .favorites-grid,
   .favorite-card {
     grid-template-columns: 1fr;
+  }
+
+  .favorite-card img {
+    min-height: 200px;
   }
 }
