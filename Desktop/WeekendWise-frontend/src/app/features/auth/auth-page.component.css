@@ -1,0 +1,55 @@
+.auth-page {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 0.9fr 1.1fr;
+  gap: 28px;
+  align-items: center;
+}
+
+.auth-copy h1 {
+  margin: 16px 0 12px;
+  font-size: clamp(2.1rem, 4vw, 3.6rem);
+  line-height: 1.08;
+}
+
+.auth-copy p {
+  color: var(--muted);
+  line-height: 1.8;
+  max-width: 46ch;
+}
+
+.auth-card {
+  padding: 24px;
+  display: grid;
+  gap: 16px;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.auth-submit {
+  margin-top: 6px;
+}
+
+.auth-link {
+  margin: 0;
+  color: var(--muted);
+}
+
+.auth-link a {
+  color: var(--primary);
+}
+
+@media (max-width: 900px) {
+  .auth-page,
+  .field-row {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-page {
+    padding: 40px 0;
+  }
+}

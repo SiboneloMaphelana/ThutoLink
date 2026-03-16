@@ -1,0 +1,76 @@
+<section class="container results-page">
+  <header class="results-header">
+    <div>
+      <span class="pill">{{ results().length }} destination options</span>
+      <h1>Weekend recommendations</h1>
+      <p *ngIf="lastRequest() as request">
+        From {{ request.origin }} · {{ request.travelers }} travelers · Budget {{ request.budget | currency:'ZAR':'symbol':'1.0-0' }} · {{ request.tripStyle }}
+      </p>
+    </div>
+
+    <div class="sort-group card">
+      <button type="button" [class.active]="sortBy() === 'BEST_MATCH'" (click)="setSort('BEST_MATCH')">Best match</button>
+      <button type="button" [class.active]="sortBy() === 'CHEAPEST'" (click)="setSort('CHEAPEST')">Cheapest</button>
+      <button type="button" [class.active]="sortBy() === 'BEST_WEATHER'" (click)="setSort('BEST_WEATHER')">Best weather</button>
+    </div>
+  </header>
+
+  <div class="empty-state" *ngIf="results().length === 0">
+    No results yet. Run a search from the home page to populate destination recommendations.
+  </div>
+
+  <div class="results-grid" *ngIf="results().length > 0">
+    <article class="card destination-card" *ngFor="let result of results()">
+      <img class="destination-image" [src]="result.imageUrl" [alt]="result.destinationCity">
+
+      <div class="destination-content">
+        <div class="destination-topline">
+          <div>
+            <h2>{{ result.destinationCity }}, {{ result.country }}</h2>
+            <p>{{ result.weatherSummary }} · Score {{ result.score }}/100</p>
+          </div>
+          <span class="score-chip">{{ result.score }}</span>
+        </div>
+
+        <div class="price-summary">
+          <div>
+            <span>Flight</span>
+            <strong>{{ result.flightPrice | currency:'ZAR':'symbol':'1.0-0' }}</strong>
+          </div>
+          <div>
+            <span>Stay</span>
+            <strong>{{ result.hotelPrice | currency:'ZAR':'symbol':'1.0-0' }}</strong>
+          </div>
+          <div>
+            <span>Total</span>
+            <strong>{{ result.totalEstimatedCost | currency:'ZAR':'symbol':'1.0-0' }}</strong>
+          </div>
+        </div>
+
+        <div class="detail-grid">
+          <div>
+            <small>Flight</small>
+            <strong>{{ result.flight.airline }}</strong>
+            <span>{{ result.flight.departureTime }} → {{ result.flight.returnTime }} · {{ result.flight.duration }}</span>
+          </div>
+          <div>
+            <small>Hotel</small>
+            <strong>{{ result.hotel.name }}</strong>
+            <span>{{ result.hotel.area }} · {{ result.hotel.rating }}★</span>
+          </div>
+        </div>
+
+        <div class="attractions">
+          <span class="pill" *ngFor="let attraction of result.topAttractions">{{ attraction.name }}</span>
+        </div>
+
+        <div class="card-actions">
+          <a class="btn btn-primary" [routerLink]="['/destinations', result.id]">View details</a>
+          <button class="btn btn-secondary" type="button" (click)="toggleFavorite(result)">
+            {{ isFavorite(result.id) ? 'Remove saved' : 'Save trip' }}
+          </button>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>

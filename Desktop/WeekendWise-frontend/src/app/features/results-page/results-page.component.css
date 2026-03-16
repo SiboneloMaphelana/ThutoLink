@@ -1,0 +1,158 @@
+.results-page {
+  padding: 30px 0 48px;
+}
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: end;
+  margin-bottom: 24px;
+}
+
+.results-header h1 {
+  margin: 14px 0 8px;
+  font-size: 2.3rem;
+}
+
+.results-header p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.sort-group {
+  display: inline-flex;
+  padding: 6px;
+  gap: 6px;
+}
+
+.sort-group button {
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 14px;
+  background: transparent;
+  color: var(--muted);
+}
+
+.sort-group button.active {
+  background: rgba(73, 198, 229, 0.16);
+  color: var(--text);
+}
+
+.results-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.destination-card {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  overflow: hidden;
+}
+
+.destination-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.destination-content {
+  padding: 22px;
+}
+
+.destination-topline {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.destination-topline h2 {
+  margin: 0 0 8px;
+}
+
+.destination-topline p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.score-chip {
+  min-width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(76, 185, 68, 0.18);
+  color: #8fe686;
+  font-weight: 800;
+}
+
+.price-summary,
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.price-summary {
+  margin-bottom: 16px;
+}
+
+.price-summary div,
+.detail-grid div {
+  padding: 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 14px;
+}
+
+.price-summary span,
+.detail-grid small,
+.detail-grid span {
+  display: block;
+  color: var(--muted);
+}
+
+.price-summary strong,
+.detail-grid strong {
+  display: block;
+  margin-top: 6px;
+}
+
+.attractions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.card-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+@media (max-width: 960px) {
+  .destination-card {
+    grid-template-columns: 1fr;
+  }
+
+  .destination-image {
+    height: 220px;
+  }
+
+  .results-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+@media (max-width: 720px) {
+  .price-summary,
+  .detail-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card-actions {
+    flex-direction: column;
+  }
+}

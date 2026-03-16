@@ -1,0 +1,26 @@
+<section class="container favorites-page">
+  <header class="favorites-header">
+    <span class="pill">{{ favorites().length }} saved trips</span>
+    <h1>Saved weekend options</h1>
+    <p>Keep a shortlist while comparing destination cost, weather and trip fit.</p>
+  </header>
+
+  <div class="empty-state" *ngIf="favorites().length === 0">
+    No saved trips yet. Save destinations from the results or detail page.
+  </div>
+
+  <div class="favorites-grid" *ngIf="favorites().length > 0">
+    <article class="card favorite-card" *ngFor="let trip of favorites()">
+      <img [src]="trip.imageUrl" [alt]="trip.destinationCity">
+      <div>
+        <h2>{{ trip.destinationCity }}, {{ trip.country }}</h2>
+        <p>{{ trip.weatherSummary }}</p>
+        <strong>{{ trip.totalEstimatedCost | currency:'ZAR':'symbol':'1.0-0' }}</strong>
+        <div class="favorite-actions">
+          <a class="btn btn-primary" [routerLink]="['/destinations', trip.id]">View trip</a>
+          <button class="btn btn-secondary" type="button" (click)="remove(trip.id)">Remove</button>
+        </div>
+      </div>
+    </article>
+  </div>
+</section>

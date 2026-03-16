@@ -1,0 +1,82 @@
+<p>search-page works!</p>
+<section class="hero container">
+  <div class="hero-copy">
+    <span class="pill">Weekend trip scoring across flights, stays, weather and attractions</span>
+    <h1>Find a better weekend escape without opening five tabs.</h1>
+    <p>
+      EscapeScout ranks destination options by total cost, weather quality and trip style fit.
+      Search once, compare quickly, and save the shortlist.
+    </p>
+
+    <div class="hero-stats">
+      <article class="card stat-card">
+        <strong>3 data layers</strong>
+        <span>Flights, hotels and weather in one result set</span>
+      </article>
+      <article class="card stat-card">
+        <strong>Style-aware</strong>
+        <span>Culture, nightlife, family, adventure, relaxing</span>
+      </article>
+      <article class="card stat-card">
+        <strong>Budget first</strong>
+        <span>See realistic weekend totals before clicking through</span>
+      </article>
+    </div>
+  </div>
+
+  <form class="card search-card" [formGroup]="form" (ngSubmit)="search()">
+    <div class="search-grid">
+      <div class="field">
+        <label for="origin">Origin airport</label>
+        <input id="origin" class="input" type="text" formControlName="origin" maxlength="3" placeholder="JNB">
+      </div>
+
+      <div class="field">
+        <label for="startDate">Departure date</label>
+        <input id="startDate" class="input" type="date" formControlName="startDate">
+      </div>
+
+      <div class="field">
+        <label for="endDate">Return date</label>
+        <input id="endDate" class="input" type="date" formControlName="endDate">
+      </div>
+
+      <div class="field">
+        <label for="budget">Budget</label>
+        <input id="budget" class="input" type="number" formControlName="budget" min="1000" step="100">
+      </div>
+
+      <div class="field">
+        <label for="travelers">Travelers</label>
+        <input id="travelers" class="input" type="number" formControlName="travelers" min="1" max="6">
+      </div>
+
+      <div class="field">
+        <label for="tripStyle">Trip style</label>
+        <select id="tripStyle" class="select" formControlName="tripStyle">
+          <option *ngFor="let style of tripStyles" [value]="style">{{ style }}</option>
+        </select>
+      </div>
+
+      <div class="field field-wide">
+        <label for="region">Region</label>
+        <select id="region" class="select" formControlName="region">
+          <option value="AFRICA">Africa</option>
+          <option value="EUROPE">Europe</option>
+          <option value="MIDDLE_EAST">Middle East</option>
+          <option value="ASIA">Asia</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="search-footer">
+      <div>
+        <strong>Search objective</strong>
+        <p>Rank destinations that fit a short, realistic weekend itinerary.</p>
+      </div>
+      <button class="btn btn-primary" type="submit" [disabled]="isSubmitting">
+        {{ isSubmitting ? 'Scoring destinations...' : 'Search weekend trips' }}
+      </button>
+    </div>
+  </form>
+</section>

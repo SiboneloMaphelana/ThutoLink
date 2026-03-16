@@ -1,0 +1,94 @@
+<section class="container detail-page" *ngIf="!isLoading(); else loadingTemplate">
+  <ng-container *ngIf="detail() as trip; else missingTemplate">
+    <header class="detail-hero card">
+      <img [src]="trip.imageUrl" [alt]="trip.destinationCity">
+      <div class="detail-hero-copy">
+        <span class="pill">{{ trip.region }} · Score {{ trip.score }}/100</span>
+        <h1>{{ trip.destinationCity }}, {{ trip.country }}</h1>
+        <p>{{ trip.overview }}</p>
+
+        <div class="hero-meta">
+          <div>
+            <span>Total estimate</span>
+            <strong>{{ trip.totalEstimatedCost | currency:'ZAR':'symbol':'1.0-0' }}</strong>
+          </div>
+          <div>
+            <span>Weather</span>
+            <strong>{{ trip.weatherSummary }}</strong>
+          </div>
+          <div>
+            <span>Hotel</span>
+            <strong>{{ trip.hotel.name }}</strong>
+          </div>
+        </div>
+
+        <div class="hero-actions">
+          <button class="btn btn-primary" type="button" (click)="toggleFavorite()">
+            {{ isFavorite(trip.id) ? 'Remove saved' : 'Save trip' }}
+          </button>
+          <a class="btn btn-secondary" routerLink="/results">Back to results</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="detail-grid">
+      <section class="card panel">
+        <h2>Trip cost breakdown</h2>
+        <div class="metric-list">
+          <div><span>Flight total</span><strong>{{ trip.flightPrice | currency:'ZAR':'symbol':'1.0-0' }}</strong></div>
+          <div><span>Hotel total</span><strong>{{ trip.hotelPrice | currency:'ZAR':'symbol':'1.0-0' }}</strong></div>
+          <div><span>Airline</span><strong>{{ trip.flight.airline }}</strong></div>
+          <div><span>Flight schedule</span><strong>{{ trip.flight.departureTime }} / {{ trip.flight.returnTime }}</strong></div>
+        </div>
+      </section>
+
+      <section class="card panel">
+        <h2>Forecast</h2>
+        <div class="forecast-list">
+          <div *ngFor="let item of trip.dailyForecast">
+            <strong>{{ item.day }}</strong>
+            <span>{{ item.condition }}</span>
+            <small>{{ item.minTemp }}°C → {{ item.maxTemp }}°C · Rain {{ item.rainChance }}%</small>
+          </div>
+        </div>
+      </section>
+
+      <section class="card panel full-width">
+        <h2>Top attractions</h2>
+        <div class="attractions-grid">
+          <article class="attraction-card" *ngFor="let attraction of trip.topAttractions">
+            <strong>{{ attraction.name }}</strong>
+            <span>{{ attraction.category }} · {{ attraction.rating }}★</span>
+            <small>{{ attraction.address }}</small>
+          </article>
+        </div>
+      </section>
+
+      <section class="card panel">
+        <h2>Recommended itinerary</h2>
+        <ol class="itinerary-list">
+          <li *ngFor="let item of trip.itinerary">{{ item }}</li>
+        </ol>
+      </section>
+
+      <section class="card panel">
+        <h2>Trip tags</h2>
+        <div class="tag-list">
+          <span class="pill" *ngFor="let tag of trip.tags">{{ tag }}</span>
+        </div>
+      </section>
+    </div>
+  </ng-container>
+</section>
+
+<ng-template #loadingTemplate>
+  <section class="container detail-page">
+    <div class="card panel">Loading destination details...</div>
+  </section>
+</ng-template>
+
+<ng-template #missingTemplate>
+  <section class="container detail-page">
+    <div class="empty-state">Destination not found.</div>
+  </section>
+</ng-template>

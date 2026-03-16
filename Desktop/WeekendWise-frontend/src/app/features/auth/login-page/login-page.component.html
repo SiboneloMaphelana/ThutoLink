@@ -1,0 +1,25 @@
+<section class="auth-page container">
+  <div class="auth-copy">
+    <span class="pill">EscapeScout account</span>
+    <h1>Log in to save weekend trip shortlists.</h1>
+    <p>Saved trips, faster repeat searches and a cleaner planning flow.</p>
+  </div>
+
+  <form class="card auth-card" [formGroup]="form" (ngSubmit)="submit()">
+    <div class="field">
+      <label for="email">Email</label>
+      <input id="email" class="input" type="email" formControlName="email">
+    </div>
+
+    <div class="field">
+      <label for="password">Password</label>
+      <input id="password" class="input" type="password" formControlName="password">
+    </div>
+
+    <button class="btn btn-primary auth-submit" type="submit" [disabled]="isSubmitting">
+      {{ isSubmitting ? 'Logging in...' : 'Log in' }}
+    </button>
+
+    <p class="auth-link">No account yet? <a routerLink="/auth/register">Create one</a></p>
+  </form>
+</section>
