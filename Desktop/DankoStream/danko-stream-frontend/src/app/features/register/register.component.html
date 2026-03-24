@@ -1,0 +1,35 @@
+<section class="login-shell">
+  <article class="login-card">
+    <p class="eyebrow">New account</p>
+    <h1>Create your DankoStream account</h1>
+    <p class="intro">Register to save your watchlist and use recommendations. Password must be at least 8 characters.</p>
+
+    <form (ngSubmit)="submit()" #registerForm="ngForm" class="login-form">
+      <label>
+        <span>Username</span>
+        <input type="text" name="username" [(ngModel)]="model.username" required minlength="3" maxlength="50" />
+      </label>
+
+      <label>
+        <span>Password</span>
+        <input type="password" name="password" [(ngModel)]="model.password" required minlength="8" maxlength="100" />
+      </label>
+
+      <label>
+        <span>Confirm password</span>
+        <input type="password" name="confirmPassword" [(ngModel)]="model.confirmPassword" required />
+      </label>
+
+      <p class="error" *ngIf="error">{{ error }}</p>
+
+      <button type="submit" [disabled]="registerForm.invalid || loading">
+        {{ loading ? 'Creating account...' : 'Register' }}
+      </button>
+
+      <p class="auth-switch">
+        Already have an account?
+        <a routerLink="/login" [queryParams]="route.snapshot.queryParams">Sign in</a>
+      </p>
+    </form>
+  </article>
+</section>

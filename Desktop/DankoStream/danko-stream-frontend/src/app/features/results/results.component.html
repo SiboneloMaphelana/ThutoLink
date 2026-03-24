@@ -1,0 +1,32 @@
+<section class="results-shell">
+  <app-section-header
+    eyebrow="Ranked Results"
+    title="Scored recommendations based on your current watch brief."
+    description="The backend can cache upstream RapidAPI responses, then apply business-specific filtering and ranking before the frontend renders these cards.">
+  </app-section-header>
+
+  <div class="query-summary" *ngIf="query">
+    <span>{{ query.mood }}</span>
+    <span>{{ query.runtime }}</span>
+    <span>{{ query.intensity }}</span>
+    <span *ngFor="let genre of query.genres">{{ genre }}</span>
+  </div>
+
+  <p *ngIf="loading" class="status">Scoring movies and building a shortlist...</p>
+
+  <div class="results-grid" *ngIf="!loading">
+    <div class="result-card" *ngFor="let item of recommendations">
+      <app-movie-card
+        [movie]="item.movie"
+        [recommendation]="item"
+        [saved]="isSaved(item.movie.id)"
+        (saveToggle)="toggleSave($event)">
+      </app-movie-card>
+
+      <div class="actions">
+        <a [routerLink]="['/movie', item.movie.id]">View details</a>
+        <a [routerLink]="['/compare']" [queryParams]="{ left: item.movie.id }">Compare</a>
+      </div>
+    </div>
+  </div>
+</section>

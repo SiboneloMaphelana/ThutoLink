@@ -1,0 +1,75 @@
+<section class="form-shell">
+  <div class="form-panel">
+    <app-section-header
+      eyebrow="Recommendation Form"
+      title="Choose the mood, runtime, and intensity for tonight."
+      description="This form maps directly to the backend recommendation endpoint, so the same payload can be reused by mobile, web, or future admin tools.">
+    </app-section-header>
+
+    <form class="recommendation-form" (ngSubmit)="submit()">
+      <div class="field-group">
+        <label>Mood</label>
+        <div class="choice-row">
+          <button
+            *ngFor="let mood of moods"
+            type="button"
+            class="choice-chip"
+            [class.active]="model.mood === mood"
+            (click)="model.mood = mood">
+            {{ mood }}
+          </button>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Runtime</label>
+        <div class="choice-row">
+          <button
+            *ngFor="let runtime of runtimes"
+            type="button"
+            class="choice-chip"
+            [class.active]="model.runtime === runtime"
+            (click)="model.runtime = runtime">
+            {{ runtime }}
+          </button>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Intensity</label>
+        <div class="choice-row">
+          <button
+            *ngFor="let intensity of intensities"
+            type="button"
+            class="choice-chip"
+            [class.active]="model.intensity === intensity"
+            (click)="model.intensity = intensity">
+            {{ intensity }}
+          </button>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Preferred genres</label>
+        <div class="choice-row">
+          <button
+            *ngFor="let genre of genres"
+            type="button"
+            class="choice-chip secondary"
+            [class.active]="model.genres.includes(genre)"
+            (click)="toggleGenre(genre)">
+            {{ genre }}
+          </button>
+        </div>
+      </div>
+
+      <button class="submit-button" type="submit">Get recommendations</button>
+    </form>
+  </div>
+
+  <aside class="payload-panel">
+    <p class="mini-label">Request payload preview</p>
+    <pre>{{ model | json }}</pre>
+    <p class="small-note">Backend route: <code>POST /api/recommendations</code></p>
+  </aside>
+</section>

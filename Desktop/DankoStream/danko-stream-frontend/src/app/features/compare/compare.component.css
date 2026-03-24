@@ -1,0 +1,54 @@
+.compare-shell,
+.selector-row {
+  display: grid;
+  gap: 20px;
+}
+
+.selector-row {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.comparison-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
+}
+
+.compare-card {
+  padding: 28px;
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  border: 2px solid var(--border-dark);
+}
+
+.compare-card.winner {
+  border: 4px solid var(--accent-ember);
+  background: #ffffcc;
+}
+
+label {
+  display: grid;
+  gap: 8px;
+}
+
+select {
+  padding: 8px 12px;
+  border: var(--bevel-in);
+  border-radius: 0;
+  background: #ffffff;
+}
+
+.verdict {
+  padding: 18px;
+  border-radius: 0;
+  border: 2px groove var(--border-mid);
+  background: var(--surface-muted);
+}
+
+@media (max-width: 920px) {
+  .selector-row,
+  .comparison-grid {
+    grid-template-columns: 1fr;
+  }
+}

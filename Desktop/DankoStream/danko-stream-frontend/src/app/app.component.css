@@ -1,0 +1,101 @@
+.app-shell {
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 12px 16px;
+  background: #000080;
+  border-bottom: 3px solid #000000;
+}
+
+.brand {
+  color: #ffffff;
+  text-decoration: none;
+  font-family: Impact, "Arial Black", Arial, sans-serif;
+  font-size: 1.5rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.topbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+nav a {
+  padding: 6px 12px;
+  border: var(--bevel-out);
+  background: #c0c0c0;
+  text-decoration: none;
+  color: #000000;
+}
+
+nav a:visited {
+  color: #000000;
+}
+
+nav a.active {
+  background: #ffcc00;
+  border: 2px inset #808080;
+}
+
+nav a:hover:not(.active) {
+  background: #ffffff;
+}
+
+.auth-panel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #ffffff;
+}
+
+.welcome {
+  font-size: 0.9rem;
+}
+
+.auth-button,
+.auth-link {
+  padding: 6px 12px;
+  border: var(--bevel-out);
+  background: #ffcc00;
+  color: #000000;
+  text-decoration: none;
+  font: inherit;
+  cursor: pointer;
+}
+
+.page-frame {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 20px 32px 48px;
+}
+
+@media (max-width: 720px) {
+  .topbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .topbar-actions {
+    justify-content: flex-start;
+  }
+
+  .page-frame {
+    padding-inline: 18px;
+  }
+}

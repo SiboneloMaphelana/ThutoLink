@@ -1,0 +1,43 @@
+<section class="hero">
+  <div class="hero-copy">
+    <app-section-header
+      eyebrow="Movie Discovery Platform"
+      title="Replace title-hunting with a recommendation engine built around how people feel."
+      description="DankoStream combines RapidAPI movie data, weighted scoring, and a polished Angular workflow so users can move from mood to shortlist in a few taps.">
+    </app-section-header>
+
+    <div class="cta-row">
+      <a routerLink="/recommend" class="primary-link">Start a recommendation</a>
+      <a routerLink="/compare" class="secondary-link">Compare two movies</a>
+    </div>
+
+    <div class="capability-list">
+      <article *ngFor="let item of capabilities">{{ item }}</article>
+    </div>
+  </div>
+
+  <aside class="hero-panel">
+    <p class="mini-label">Backend shape</p>
+    <h3>RapidAPI ingestion -> cache -> filters -> ranking -> frontend cards</h3>
+    <div class="endpoint-list">
+      <code *ngFor="let endpoint of endpoints">{{ endpoint }}</code>
+    </div>
+  </aside>
+</section>
+
+<section class="overview-grid">
+  <article class="info-card">
+    <h3>Recommendation Logic</h3>
+    <p>Mood contributes the strongest weight, then runtime fit, intensity match, requested genres, and baseline quality.</p>
+  </article>
+
+  <article class="info-card">
+    <h3>Frontend Experience</h3>
+    <p>Responsive cards, saved watchlist state, side-by-side comparison, and detail pages that reuse one shared movie model.</p>
+  </article>
+
+  <article class="info-card">
+    <h3>Backend Responsibilities</h3>
+    <p>Normalize RapidAPI fields, cache hot responses, expose stable REST contracts, and keep scoring rules server-side.</p>
+  </article>
+</section>

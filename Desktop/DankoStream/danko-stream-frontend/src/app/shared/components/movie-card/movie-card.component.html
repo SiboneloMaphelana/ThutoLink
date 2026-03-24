@@ -1,0 +1,28 @@
+<article *ngIf="movie" class="movie-card" [class.compact]="mode === 'compact'">
+  <div class="art" [style.background-image]="'url(' + movie.posterUrl + ')'">
+    <span class="pill score" *ngIf="recommendation">{{ recommendation.score }}</span>
+    <button class="save-button" type="button" (click)="onToggleSave()">
+      {{ saved ? 'Saved' : 'Save' }}
+    </button>
+  </div>
+
+  <div class="content">
+    <div class="topline">
+      <h3>{{ movie.title }}</h3>
+      <span>{{ movie.year }}</span>
+    </div>
+
+    <p class="meta">{{ movie.runtime }} min · {{ movie.intensity }} intensity · {{ movie.language }}</p>
+    <p class="overview">{{ movie.overview }}</p>
+
+    <div class="chip-row">
+      <span class="pill" *ngFor="let genre of movie.genres.slice(0, 3)">{{ genre }}</span>
+    </div>
+
+    <div class="breakdown" *ngIf="recommendation">
+      <span>Mood {{ recommendation.breakdown.mood }}</span>
+      <span>Runtime {{ recommendation.breakdown.runtime }}</span>
+      <span>Intensity {{ recommendation.breakdown.intensity }}</span>
+    </div>
+  </div>
+</article>

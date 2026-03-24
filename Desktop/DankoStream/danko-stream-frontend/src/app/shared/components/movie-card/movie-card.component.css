@@ -1,0 +1,94 @@
+.movie-card {
+  display: grid;
+  overflow: hidden;
+  border: 2px solid var(--border-dark);
+  border-radius: 0;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.movie-card.compact {
+  grid-template-columns: 0.9fr 1.1fr;
+}
+
+.art {
+  position: relative;
+  min-height: 240px;
+  background-size: cover;
+  background-position: center;
+}
+
+.art::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  pointer-events: none;
+}
+
+.content {
+  display: grid;
+  gap: 14px;
+  padding: 22px;
+}
+
+.topline,
+.chip-row,
+.breakdown {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+h3,
+.overview,
+.meta {
+  margin: 0;
+}
+
+.meta,
+.overview,
+.breakdown {
+  color: var(--text-soft);
+}
+
+.pill {
+  padding: 4px 10px;
+  border-radius: 0;
+  background: var(--surface-muted);
+  border: 1px solid var(--border-mid);
+  font-size: 0.85rem;
+}
+
+.score {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 1;
+  background: var(--accent-gold);
+  color: #000000;
+  font-weight: 700;
+  border: 2px solid #000000;
+}
+
+.save-button {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  z-index: 1;
+  border: var(--bevel-out);
+  border-radius: 0;
+  padding: 6px 12px;
+  background: #c0c0c0;
+  color: #000000;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+@media (max-width: 720px) {
+  .movie-card.compact {
+    grid-template-columns: 1fr;
+  }
+}

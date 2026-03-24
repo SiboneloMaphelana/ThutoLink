@@ -1,0 +1,30 @@
+<section class="login-shell">
+  <article class="login-card">
+    <p class="eyebrow">Secure Access</p>
+    <h1>Sign in to DankoStream</h1>
+    <p class="intro">Sign in with your DankoStream account to use recommendations, movie details, comparisons, and your watchlist.</p>
+
+    <form (ngSubmit)="submit()" #loginForm="ngForm" class="login-form">
+      <label>
+        <span>Username</span>
+        <input type="text" name="username" [(ngModel)]="model.username" required />
+      </label>
+
+      <label>
+        <span>Password</span>
+        <input type="password" name="password" [(ngModel)]="model.password" required />
+      </label>
+
+      <p class="error" *ngIf="error">{{ error }}</p>
+
+      <button type="submit" [disabled]="loginForm.invalid || loading">
+        {{ loading ? 'Signing in...' : 'Login' }}
+      </button>
+
+      <p class="auth-switch">
+        New here?
+        <a routerLink="/register" [queryParams]="route.snapshot.queryParams">Create an account</a>
+      </p>
+    </form>
+  </article>
+</section>

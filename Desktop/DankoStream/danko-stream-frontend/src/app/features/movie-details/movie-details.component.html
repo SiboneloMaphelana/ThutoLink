@@ -1,0 +1,39 @@
+<section class="details-shell" *ngIf="movie">
+  <div class="hero" [style.background-image]="'url(' + movie.backdropUrl + ')'">
+    <div class="hero-copy">
+      <p class="eyebrow">Movie Details</p>
+      <h1>{{ movie.title }}</h1>
+      <p>{{ movie.overview }}</p>
+      <div class="stat-row">
+        <span>{{ movie.year }}</span>
+        <span>{{ movie.runtime }} min</span>
+        <span>{{ movie.rating }}/10</span>
+        <span>{{ movie.language }}</span>
+      </div>
+      <button type="button" (click)="toggleSave()">{{ isSaved() ? 'Remove from watchlist' : 'Save to watchlist' }}</button>
+    </div>
+  </div>
+
+  <div class="details-grid">
+    <article class="detail-card">
+      <h3>Creative Team</h3>
+      <p>Director: {{ movie.director }}</p>
+      <p>Cast: {{ movie.cast.join(', ') }}</p>
+    </article>
+
+    <article class="detail-card">
+      <h3>Genres and Mood Tags</h3>
+      <div class="pill-row">
+        <span *ngFor="let genre of movie.genres">{{ genre }}</span>
+        <span *ngFor="let mood of movie.moods">{{ mood }}</span>
+      </div>
+    </article>
+
+    <article class="detail-card">
+      <h3>Streaming Options</h3>
+      <div class="pill-row">
+        <span *ngFor="let provider of movie.watchProviders">{{ provider }}</span>
+      </div>
+    </article>
+  </div>
+</section>

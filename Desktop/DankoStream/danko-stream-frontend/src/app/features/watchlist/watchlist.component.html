@@ -1,0 +1,25 @@
+<section class="watchlist-shell">
+  <app-section-header
+    eyebrow="Saved Watchlist"
+    title="Keep a small, high-intent list instead of endless tabs."
+    description="This view can map to local storage for quick demos or a user-specific backend endpoint for real accounts and sync.">
+  </app-section-header>
+
+  <div class="watchlist-grid" *ngIf="savedMovies.length; else emptyState">
+    <div *ngFor="let movie of savedMovies">
+      <app-movie-card
+        [movie]="movie"
+        [saved]="isSaved(movie.id)"
+        mode="compact"
+        (saveToggle)="toggleSave($event)">
+      </app-movie-card>
+    </div>
+  </div>
+
+  <ng-template #emptyState>
+    <div class="empty-card">
+      <p>No saved movies yet. Save titles from results or details pages to build your shortlist.</p>
+      <a routerLink="/recommend">Create recommendations</a>
+    </div>
+  </ng-template>
+</section>

@@ -1,0 +1,27 @@
+<div class="app-shell">
+  <header class="topbar">
+    <a class="brand" routerLink="/">DankoStream</a>
+
+    <div class="topbar-actions">
+      <nav>
+        <a *ngFor="let item of navigation" [routerLink]="item.path" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: item.path === '/' }">
+          {{ item.label }}
+        </a>
+      </nav>
+
+      <div class="auth-panel" *ngIf="authState; else loggedOut">
+        <span class="welcome">Signed in as {{ authState.username }}</span>
+        <button type="button" class="auth-button" (click)="logout()">Logout</button>
+      </div>
+
+      <ng-template #loggedOut>
+        <a class="auth-link" routerLink="/login" routerLinkActive="active">Login</a>
+        <a class="auth-link" routerLink="/register" routerLinkActive="active">Register</a>
+      </ng-template>
+    </div>
+  </header>
+
+  <main class="page-frame">
+    <router-outlet></router-outlet>
+  </main>
+</div>

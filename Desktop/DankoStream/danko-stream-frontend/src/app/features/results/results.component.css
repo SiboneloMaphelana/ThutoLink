@@ -1,0 +1,37 @@
+.results-shell,
+.results-grid,
+.query-summary,
+.actions {
+  display: grid;
+  gap: 18px;
+}
+
+.query-summary,
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.query-summary span,
+.actions a,
+.status {
+  padding: 6px 12px;
+  border-radius: 0;
+  background: var(--surface-muted);
+  border: 2px solid var(--border-mid);
+}
+
+.results-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.actions a {
+  color: var(--text-main);
+  text-decoration: none;
+}
+
+@media (max-width: 960px) {
+  .results-grid {
+    grid-template-columns: 1fr;
+  }
+}

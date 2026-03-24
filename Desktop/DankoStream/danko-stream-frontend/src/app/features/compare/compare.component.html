@@ -1,0 +1,49 @@
+<section class="compare-shell">
+  <app-section-header
+    eyebrow="Comparison View"
+    title="Put two contenders head to head."
+    description="This page maps well to a backend compare endpoint or can be computed from already-fetched movie metadata, depending on how much server control you want.">
+  </app-section-header>
+
+  <div class="selector-row">
+    <label>
+      <span>Movie A</span>
+      <select [(ngModel)]="selectedLeft" (ngModelChange)="runCompare()">
+        <option *ngFor="let movie of movies" [value]="movie.id">{{ movie.title }}</option>
+      </select>
+    </label>
+
+    <label>
+      <span>Movie B</span>
+      <select [(ngModel)]="selectedRight" (ngModelChange)="runCompare()">
+        <option *ngFor="let movie of movies" [value]="movie.id">{{ movie.title }}</option>
+      </select>
+    </label>
+  </div>
+
+  <div class="comparison-grid" *ngIf="getMovie(selectedLeft) && getMovie(selectedRight)">
+    <article class="compare-card" [class.winner]="winnerId === selectedLeft">
+      <h3>{{ getMovie(selectedLeft)?.title }}</h3>
+      <p>{{ getMovie(selectedLeft)?.overview }}</p>
+      <ul>
+        <li>Runtime: {{ getMovie(selectedLeft)?.runtime }} min</li>
+        <li>Rating: {{ getMovie(selectedLeft)?.rating }}/10</li>
+        <li>Intensity: {{ getMovie(selectedLeft)?.intensity }}</li>
+        <li>Genres: {{ getMovie(selectedLeft)?.genres?.join(', ') }}</li>
+      </ul>
+    </article>
+
+    <article class="compare-card" [class.winner]="winnerId === selectedRight">
+      <h3>{{ getMovie(selectedRight)?.title }}</h3>
+      <p>{{ getMovie(selectedRight)?.overview }}</p>
+      <ul>
+        <li>Runtime: {{ getMovie(selectedRight)?.runtime }} min</li>
+        <li>Rating: {{ getMovie(selectedRight)?.rating }}/10</li>
+        <li>Intensity: {{ getMovie(selectedRight)?.intensity }}</li>
+        <li>Genres: {{ getMovie(selectedRight)?.genres?.join(', ') }}</li>
+      </ul>
+    </article>
+  </div>
+
+  <p class="verdict">{{ verdict }}</p>
+</section>
