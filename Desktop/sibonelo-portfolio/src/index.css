@@ -1,0 +1,104 @@
+:root {
+  font-family:
+    'Space Grotesk',
+    'Aptos',
+    'Segoe UI',
+    'Helvetica Neue',
+    sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #eff7ff;
+  background: #07111f;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  --bg: #07111f;
+  --bg-soft: #0f1f35;
+  --line: rgba(125, 220, 255, 0.14);
+  --text-high: #eff7ff;
+  --text-mid: #96aeca;
+  --accent: #66e3ff;
+  --accent-strong: #3cbcff;
+  --accent-soft: rgba(102, 227, 255, 0.16);
+  --mint: #14cba8;
+  --sky: #2b6fff;
+  --card: rgba(10, 20, 37, 0.78);
+  --shadow: 0 24px 60px rgba(0, 0, 0, 0.34);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top, rgba(43, 111, 255, 0.14), transparent 30%),
+    radial-gradient(circle at 80% 20%, rgba(20, 203, 168, 0.12), transparent 22%),
+    linear-gradient(rgba(125, 220, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(125, 220, 255, 0.06) 1px, transparent 1px),
+    var(--bg);
+  background-size: auto, auto, 36px 36px, 36px 36px, auto;
+  background-attachment: fixed;
+  color: var(--text-high);
+  letter-spacing: 0.01em;
+}
+
+a,
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(4rem, 9.5vw, 7.6rem);
+  font-weight: 800;
+  letter-spacing: -0.09em;
+  line-height: 0.94;
+}
+
+h2 {
+  font-size: clamp(3rem, 6.2vw, 5.25rem);
+  font-weight: 800;
+  letter-spacing: -0.08em;
+  line-height: 0.98;
+}
+
+h3 {
+  font-size: 1.625rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+::selection {
+  background: rgba(102, 227, 255, 0.3);
+  color: #03101b;
+}
