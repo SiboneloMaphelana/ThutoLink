@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap');
+@import 'tailwindcss';
+
+@theme {
+  --color-ink: #112218;
+  --color-forest: #174b32;
+  --color-mint: #d7f1d8;
+  --color-sun: #f2bc57;
+  --color-clay: #f7f1e6;
+  --color-coral: #ef7a5d;
+  --font-sans: 'Manrope', sans-serif;
+  --font-display: 'Outfit', sans-serif;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  min-height: 100dvh;
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  background: #f6f1e7;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+.glass-panel {
+  @apply rounded-[28px] border border-white/60 bg-white/80 shadow-[0_24px_90px_rgba(17,34,24,0.08)] backdrop-blur;
+}
+
+.section-title {
+  @apply font-display text-2xl font-semibold text-[color:var(--color-ink)];
+}

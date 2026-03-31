@@ -1,0 +1,68 @@
+@if (state.loading()) {
+  <main class="flex min-h-dvh items-center justify-center px-4">
+    <div class="glass-panel flex items-center gap-3 px-6 py-5">
+      <app-icon name="insights" className="h-6 w-6 text-[color:var(--color-forest)]" />
+      <p class="font-semibold text-slate-700">Loading your workspace...</p>
+    </div>
+  </main>
+} @else if (data(); as dashboard) {
+  <main class="px-3 py-3 sm:px-6 sm:py-4 lg:px-8">
+    <div class="mx-auto flex max-w-7xl flex-col gap-6">
+      <header class="overflow-hidden rounded-[26px] bg-[color:var(--color-forest)] p-5 text-white shadow-[0_30px_120px_rgba(23,75,50,0.18)] sm:rounded-[34px] sm:p-8">
+        <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+          <div class="min-w-0 space-y-4">
+            <p class="inline-flex max-w-full items-center gap-2 rounded-full border border-white/15 bg-white/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-white/90 sm:text-xs sm:tracking-[0.24em]">
+              <app-icon name="school" className="h-4 w-4" />
+              {{ dashboard.school.name }} • {{ dashboard.school.district }}
+            </p>
+            <div class="space-y-2">
+              <div class="inline-flex items-center gap-3">
+                <app-icon [name]="icon()" className="h-6 w-6 text-white" />
+                <h1 class="font-display text-2xl font-semibold leading-tight sm:text-4xl">{{ title() }}</h1>
+              </div>
+              <p class="max-w-3xl text-sm text-white/80 sm:text-base">
+                {{ description() }}
+              </p>
+            </div>
+          </div>
+
+          <div class="flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:justify-start">
+            <span class="max-w-full rounded-full bg-white/12 px-4 py-2 text-sm font-semibold break-all">{{ dashboard.currentUser.email }}</span>
+            <button
+              type="button"
+              class="inline-flex items-center justify-center gap-2 rounded-full bg-white px-4 py-2 text-sm font-semibold text-[color:var(--color-forest)] transition hover:translate-y-[-1px]"
+              (click)="state.logout()"
+            >
+              <app-icon name="logout" className="h-4 w-4" />
+              Sign out
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <section class="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        @for (stat of dashboard.stats; track stat.label) {
+          <article class="glass-panel p-5">
+            <p class="text-sm font-semibold uppercase tracking-[0.2em] text-slate-400">{{ stat.label }}</p>
+            <p class="mt-4 font-display text-4xl font-semibold text-[color:var(--color-ink)]">{{ stat.value }}</p>
+            <p class="mt-2 text-sm text-slate-600">{{ stat.caption }}</p>
+          </article>
+        }
+      </section>
+
+      @if (state.error()) {
+        <section class="glass-panel border border-red-100 bg-red-50/80 p-4 text-sm text-red-700">
+          {{ state.error() }}
+        </section>
+      }
+
+      @if (state.notice()) {
+        <section class="glass-panel border border-emerald-100 bg-emerald-50/80 p-4 text-sm text-emerald-700">
+          {{ state.notice() }}
+        </section>
+      }
+
+      <ng-content></ng-content>
+    </div>
+  </main>
+}

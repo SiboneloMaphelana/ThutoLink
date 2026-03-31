@@ -1,0 +1,20 @@
+import { CommonModule, DatePipe } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { DashboardShellComponent } from '../shared/dashboard-shell.component';
+import { DashboardStateService } from '../shared/dashboard-state.service';
+import { AppIconComponent } from '../../../shared/app-icon.component';
+
+@Component({
+  selector: 'app-teacher-dashboard-page',
+  standalone: true,
+  imports: [CommonModule, FormsModule, DatePipe, DashboardShellComponent, AppIconComponent],
+  templateUrl: './teacher-dashboard-page.component.html'
+})
+export class TeacherDashboardPageComponent {
+  readonly state = inject(DashboardStateService);
+
+  constructor() {
+    this.state.loadDashboard();
+  }
+}
