@@ -48,6 +48,19 @@ export interface ClassView {
   parentLinks: ParentLink[];
 }
 
+export interface FileAttachmentView {
+  fileName: string;
+  contentType: string;
+  size: number;
+}
+
+export interface FileUploadPayload {
+  fileName: string;
+  contentType: string;
+  size: number;
+  base64Data: string;
+}
+
 export interface SubmissionView {
   id: string;
   learner: UserSummary;
@@ -56,6 +69,7 @@ export interface SubmissionView {
   score: number | null;
   feedback: string | null;
   status: string;
+  attachment: FileAttachmentView | null;
 }
 
 export interface AssignmentView {
@@ -67,6 +81,7 @@ export interface AssignmentView {
   dueDate: string;
   publishedAt: string;
   status: string;
+  attachment: FileAttachmentView | null;
   submissions: SubmissionView[];
 }
 
@@ -104,10 +119,14 @@ export interface MessageView {
   parent: UserSummary;
 }
 
-export interface AlertView {
+export interface NotificationView {
+  id: string;
+  type: string;
   title: string;
   body: string;
-  date: string;
+  createdAt: string;
+  readAt: string | null;
+  read: boolean;
 }
 
 export interface DashboardResponse {
@@ -119,6 +138,6 @@ export interface DashboardResponse {
   attendance: AttendanceView[];
   announcements: AnnouncementView[];
   messages: MessageView[];
-  alerts: AlertView[];
+  notifications: NotificationView[];
   demoCredentials: DemoCredential[];
 }

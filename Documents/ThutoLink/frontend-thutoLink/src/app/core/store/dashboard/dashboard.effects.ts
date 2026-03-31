@@ -40,8 +40,8 @@ export class DashboardEffects {
   readonly submitAssignment$ = createEffect(() =>
     this.actions$.pipe(
       ofType(DashboardActions.submitAssignmentRequested),
-      concatMap(({ assignmentId, content }) =>
-        this.api.submitAssignment(assignmentId, content).pipe(
+      concatMap(({ assignmentId, payload }) =>
+        this.api.submitAssignment(assignmentId, payload).pipe(
           mergeMap(() => [
             DashboardActions.mutationSucceeded({ notice: 'Submission sent to your teacher.' }),
             DashboardActions.loadRequested()
@@ -73,7 +73,7 @@ export class DashboardEffects {
       concatMap(({ classId, payload }) =>
         this.api.recordAttendance(classId, payload).pipe(
           mergeMap(() => [
-            DashboardActions.mutationSucceeded({ notice: 'Attendance register saved and alerts are now visible to families.' }),
+            DashboardActions.mutationSucceeded({ notice: 'Attendance register saved and parent notifications are now visible.' }),
             DashboardActions.loadRequested()
           ]),
           catchError((error) => of(DashboardActions.mutationFailed({ error: error?.error?.message ?? 'Attendance could not be saved.' })))
@@ -107,6 +107,21 @@ export class DashboardEffects {
             DashboardActions.loadRequested()
           ]),
           catchError((error) => of(DashboardActions.mutationFailed({ error: error?.error?.message ?? 'Message could not be delivered.' })))
+        )
+      )
+    )
+  );
+
+  readonly markNotificationRead$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(DashboardActions.markNotificationReadRequested),
+      concatMap(({ notificationId }) =>
+        this.api.markNotificationRead(notificationId).pipe(
+          mergeMap(() => [
+            DashboardActions.mutationSucceeded({ notice: 'Notification marked as read.' }),
+            DashboardActions.loadRequested()
+          ]),
+          catchError((error) => of(DashboardActions.mutationFailed({ error: error?.error?.message ?? 'Notification could not be updated.' })))
         )
       )
     )

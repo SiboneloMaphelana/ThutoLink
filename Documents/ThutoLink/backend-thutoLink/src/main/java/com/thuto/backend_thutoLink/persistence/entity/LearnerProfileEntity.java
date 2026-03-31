@@ -12,6 +12,9 @@ public class LearnerProfileEntity {
     private String id;
 
     @Column(nullable = false)
+    private String schoolId;
+
+    @Column(nullable = false)
     private String fullName;
 
     @Column(nullable = false)
@@ -26,8 +29,9 @@ public class LearnerProfileEntity {
     public LearnerProfileEntity() {
     }
 
-    public LearnerProfileEntity(String id, String fullName, String gradeLabel, String classId, String parentId) {
+    public LearnerProfileEntity(String id, String schoolId, String fullName, String gradeLabel, String classId, String parentId) {
         this.id = id;
+        this.schoolId = schoolId;
         this.fullName = fullName;
         this.gradeLabel = gradeLabel;
         this.classId = classId;
@@ -36,6 +40,10 @@ public class LearnerProfileEntity {
 
     public String getId() {
         return id;
+    }
+
+    public String getSchoolId() {
+        return schoolId;
     }
 
     public String getFullName() {

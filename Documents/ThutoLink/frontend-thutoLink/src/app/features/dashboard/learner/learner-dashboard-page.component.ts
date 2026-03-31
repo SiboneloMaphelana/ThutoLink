@@ -17,4 +17,33 @@ export class LearnerDashboardPageComponent {
   constructor() {
     this.state.loadDashboard();
   }
+
+  async onSubmissionFileSelected(assignmentId: string, event: Event): Promise<void> {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0] ?? null;
+    try {
+      await this.state.updateSubmissionAttachment(assignmentId, file);
+    } catch (error) {
+      this.state.reportClientError(error instanceof Error ? error.message : 'The selected file could not be attached.');
+      input.value = '';
+    }
+  }
+
+  async downloadAssignmentAttachment(assignmentId: string): Promise<void> {
+    const assignment = this.state.dashboard()?.assignments.find((item) => item.id === assignmentId);
+    try {
+      await this.state.openAssignmentAttachment(assignmentId, assignment?.attachment ?? null);
+    } catch (error) {
+      this.state.reportClientError(error instanceof Error ? error.message : 'The attachment could not be downloaded.');
+    }
+  }
+
+  async downloadSubmissionAttachment(assignmentId: string, submissionId: string): Promise<void> {
+    const submission = this.state.dashboard()?.assignments.find((assignment) => assignment.id === assignmentId)?.submissions.find((item) => item.id === submissionId);
+    try {
+      await this.state.openSubmissionAttachment(submissionId, submission?.attachment ?? null);
+    } catch (error) {
+      this.state.reportClientError(error instanceof Error ? error.message : 'The attachment could not be downloaded.');
+    }
+  }
 }

@@ -1,11 +1,13 @@
 import { Injectable, computed, effect, inject, signal, untracked } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { firstValueFrom } from 'rxjs';
 import {
-  AlertView,
   AssignmentView,
   ClassView,
   DashboardResponse,
-  MessageView,
+  FileAttachmentView,
+  FileUploadPayload,
+  NotificationView,
   ParentLink,
   UserRole
 } from '../../../core/models/platform.models';
@@ -13,10 +15,13 @@ import { DashboardActions } from '../../../core/store/dashboard/dashboard.action
 import { selectDashboard, selectDashboardError, selectDashboardLoading, selectDashboardNotice } from '../../../core/store/dashboard/dashboard.selectors';
 import { AuthActions } from '../../../core/store/auth/auth.actions';
 import { selectAuthUser } from '../../../core/store/auth/auth.selectors';
+import { PlatformApiService } from '../../../core/services/platform-api.service';
 
 @Injectable({ providedIn: 'root' })
 export class DashboardStateService {
+  private readonly maxAttachmentSizeBytes = 5 * 1024 * 1024;
   private readonly store = inject(Store);
+  private readonly api = inject(PlatformApiService);
   private readonly authUser = this.store.selectSignal(selectAuthUser);
 
   readonly dashboard = this.store.selectSignal(selectDashboard);
@@ -29,7 +34,8 @@ export class DashboardStateService {
     classId: '',
     title: '',
     description: '',
-    dueDate: ''
+    dueDate: '',
+    attachment: null as FileUploadPayload | null
   });
 
   readonly attendanceForm = signal({
@@ -51,7 +57,7 @@ export class DashboardStateService {
     body: ''
   });
 
-  readonly submissionDrafts = signal<Record<string, string>>({});
+  readonly submissionDrafts = signal<Record<string, { content: string; attachment: FileUploadPayload | null }>>({});
   readonly gradeDrafts = signal<Record<string, { score: number; feedback: string }>>({});
 
   readonly currentUser = computed(() => this.dashboard()?.currentUser ?? this.authUser());
@@ -81,18 +87,28 @@ export class DashboardStateService {
       return;
     }
 
-    this.assignmentForm.set({ classId: form.classId, title: '', description: '', dueDate: '' });
+    this.assignmentForm.set({ classId: form.classId, title: '', description: '', dueDate: '', attachment: null });
     this.runAction('assignment', () => this.store.dispatch(DashboardActions.createAssignmentRequested({ payload: form })));
   }
 
   submitAssignment(assignmentId: string): void {
-    const draft = this.submissionDrafts()[assignmentId]?.trim();
-    if (!draft) {
+    const draft = this.submissionDrafts()[assignmentId] ?? { content: '', attachment: null };
+    if (!draft.content.trim() && !draft.attachment) {
       return;
     }
 
-    this.submissionDrafts.update((state) => ({ ...state, [assignmentId]: '' }));
-    this.runAction(`submit-${assignmentId}`, () => this.store.dispatch(DashboardActions.submitAssignmentRequested({ assignmentId, content: draft })));
+    this.submissionDrafts.update((state) => ({ ...state, [assignmentId]: { content: '', attachment: null } }));
+    this.runAction(`submit-${assignmentId}`, () =>
+      this.store.dispatch(
+        DashboardActions.submitAssignmentRequested({
+          assignmentId,
+          payload: {
+            content: draft.content,
+            attachment: draft.attachment
+          }
+        })
+      )
+    );
   }
 
   gradeSubmission(submissionId: string): void {
@@ -143,6 +159,12 @@ export class DashboardStateService {
     this.runAction('message', () => this.store.dispatch(DashboardActions.createMessageRequested({ payload: form })));
   }
 
+  markNotificationRead(notificationId: string): void {
+    this.runAction(`notification-${notificationId}`, () =>
+      this.store.dispatch(DashboardActions.markNotificationReadRequested({ notificationId }))
+    );
+  }
+
   setAttendanceClass(classId: string): void {
     const schoolClass = this.classById(classId);
     const entries = Object.fromEntries(
@@ -162,11 +184,21 @@ export class DashboardStateService {
   }
 
   updateSubmissionDraft(assignmentId: string, value: string): void {
-    this.submissionDrafts.update((state) => ({ ...state, [assignmentId]: value }));
+    this.submissionDrafts.update((state) => ({
+      ...state,
+      [assignmentId]: {
+        content: value,
+        attachment: state[assignmentId]?.attachment ?? null
+      }
+    }));
   }
 
   submissionDraftValue(assignment: AssignmentView): string {
-    return this.submissionDrafts()[assignment.id] || assignment.submissions[0]?.content || '';
+    return this.submissionDrafts()[assignment.id]?.content || assignment.submissions[0]?.content || '';
+  }
+
+  submissionAttachment(assignmentId: string): FileUploadPayload | null {
+    return this.submissionDrafts()[assignmentId]?.attachment ?? null;
   }
 
   updateAssignmentField(field: 'classId' | 'title' | 'description' | 'dueDate', value: string): void {
@@ -213,12 +245,12 @@ export class DashboardStateService {
     return this.classById(classId)?.parentLinks ?? [];
   }
 
-  recentAlerts(): AlertView[] {
-    return this.dashboard()?.alerts.slice(0, 4) ?? [];
+  recentNotifications(): NotificationView[] {
+    return this.dashboard()?.notifications.slice(0, 6) ?? [];
   }
 
-  recentMessages(): MessageView[] {
-    return this.dashboard()?.messages.slice(0, 4) ?? [];
+  unreadNotifications(): number {
+    return this.dashboard()?.notifications.filter((notification) => !notification.read).length ?? 0;
   }
 
   formatRole(role: UserRole | null | undefined): string {
@@ -226,6 +258,52 @@ export class DashboardStateService {
       return '';
     }
     return role.charAt(0) + role.slice(1).toLowerCase();
+  }
+
+  reportClientError(message: string): void {
+    this.store.dispatch(DashboardActions.mutationFailed({ error: message }));
+  }
+
+  async updateAssignmentAttachment(file: File | null): Promise<void> {
+    const attachment = file ? await this.toUploadPayload(file) : null;
+    this.assignmentForm.update((state) => ({ ...state, attachment }));
+  }
+
+  async updateSubmissionAttachment(assignmentId: string, file: File | null): Promise<void> {
+    const attachment = file ? await this.toUploadPayload(file) : null;
+    this.submissionDrafts.update((state) => ({
+      ...state,
+      [assignmentId]: {
+        content: state[assignmentId]?.content ?? '',
+        attachment
+      }
+    }));
+  }
+
+  async openAssignmentAttachment(assignmentId: string, attachment: FileAttachmentView | null): Promise<void> {
+    if (!attachment) {
+      return;
+    }
+    const blob = await firstValueFrom(this.api.downloadAssignmentAttachment(assignmentId));
+    this.downloadBlob(blob, attachment.fileName);
+  }
+
+  async openSubmissionAttachment(submissionId: string, attachment: FileAttachmentView | null): Promise<void> {
+    if (!attachment) {
+      return;
+    }
+    const blob = await firstValueFrom(this.api.downloadSubmissionAttachment(submissionId));
+    this.downloadBlob(blob, attachment.fileName);
+  }
+
+  formatAttachmentSize(size: number | null | undefined): string {
+    if (!size) {
+      return '0 KB';
+    }
+    if (size >= 1024 * 1024) {
+      return `${(size / (1024 * 1024)).toFixed(1)} MB`;
+    }
+    return `${Math.max(1, Math.round(size / 1024))} KB`;
   }
 
   private initializeForms(dashboard: DashboardResponse): void {
@@ -239,7 +317,8 @@ export class DashboardStateService {
       classId: currentAssignmentForm.classId || firstClass,
       title: '',
       description: '',
-      dueDate: ''
+      dueDate: '',
+      attachment: null
     });
 
     this.announcementForm.set({
@@ -270,7 +349,12 @@ export class DashboardStateService {
     });
 
     const drafts: Record<string, { score: number; feedback: string }> = {};
+    const submissionDrafts: Record<string, { content: string; attachment: FileUploadPayload | null }> = {};
     dashboard.assignments.forEach((assignment) => {
+      submissionDrafts[assignment.id] = {
+        content: this.submissionDrafts()[assignment.id]?.content ?? assignment.submissions[0]?.content ?? '',
+        attachment: this.submissionDrafts()[assignment.id]?.attachment ?? null
+      };
       assignment.submissions.forEach((submission) => {
         drafts[submission.id] = {
           score: submission.score ?? 0,
@@ -279,6 +363,7 @@ export class DashboardStateService {
       });
     });
     this.gradeDrafts.set(drafts);
+    this.submissionDrafts.set(submissionDrafts);
   }
 
   private runAction(key: string, action: () => void): void {
@@ -286,5 +371,72 @@ export class DashboardStateService {
     this.store.dispatch(DashboardActions.mutationStarted());
     action();
     this.busyAction.set('');
+  }
+
+  private async toUploadPayload(file: File): Promise<FileUploadPayload> {
+    const contentType = file.type || this.inferContentType(file.name);
+    if (!this.isAllowedAttachmentType(contentType)) {
+      throw new Error('Only PDF and image files are supported.');
+    }
+    if (file.size > this.maxAttachmentSizeBytes) {
+      throw new Error('Attachments must be 5 MB or smaller.');
+    }
+
+    const base64Data = await this.readFileAsBase64(file);
+    return {
+      fileName: file.name,
+      contentType,
+      size: file.size,
+      base64Data
+    };
+  }
+
+  private readFileAsBase64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        const result = typeof reader.result === 'string' ? reader.result : '';
+        const [, base64Data = ''] = result.split(',');
+        if (!base64Data) {
+          reject(new Error('The selected file could not be read.'));
+          return;
+        }
+        resolve(base64Data);
+      };
+      reader.onerror = () => reject(new Error('The selected file could not be read.'));
+      reader.readAsDataURL(file);
+    });
+  }
+
+  private inferContentType(fileName: string): string {
+    const extension = fileName.split('.').pop()?.toLowerCase();
+    switch (extension) {
+      case 'pdf':
+        return 'application/pdf';
+      case 'png':
+        return 'image/png';
+      case 'jpg':
+      case 'jpeg':
+        return 'image/jpeg';
+      case 'gif':
+        return 'image/gif';
+      case 'webp':
+        return 'image/webp';
+      default:
+        return '';
+    }
+  }
+
+  private isAllowedAttachmentType(contentType: string): boolean {
+    return ['application/pdf', 'image/png', 'image/jpeg', 'image/gif', 'image/webp'].includes(contentType);
+  }
+
+  private downloadBlob(blob: Blob, fileName: string): void {
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    link.click();
+    URL.revokeObjectURL(url);
   }
 }

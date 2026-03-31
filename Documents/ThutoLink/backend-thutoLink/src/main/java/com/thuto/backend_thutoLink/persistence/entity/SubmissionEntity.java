@@ -14,6 +14,9 @@ public class SubmissionEntity {
     private String id;
 
     @Column(nullable = false)
+    private String schoolId;
+
+    @Column(nullable = false)
     private String assignmentId;
 
     @Column(nullable = false)
@@ -33,20 +36,36 @@ public class SubmissionEntity {
     @Column(nullable = false)
     private String status;
 
+    private String attachmentFileName;
+
+    private String attachmentContentType;
+
+    private Long attachmentSize;
+
+    @Lob
+    @Basic(fetch = FetchType.LAZY)
+    private byte[] attachmentData;
+
     public SubmissionEntity() {
     }
 
     public SubmissionEntity(
             String id,
+            String schoolId,
             String assignmentId,
             String learnerId,
             String content,
             LocalDateTime submittedAt,
             Integer score,
             String feedback,
-            String status
+            String status,
+            String attachmentFileName,
+            String attachmentContentType,
+            Long attachmentSize,
+            byte[] attachmentData
     ) {
         this.id = id;
+        this.schoolId = schoolId;
         this.assignmentId = assignmentId;
         this.learnerId = learnerId;
         this.content = content;
@@ -54,10 +73,18 @@ public class SubmissionEntity {
         this.score = score;
         this.feedback = feedback;
         this.status = status;
+        this.attachmentFileName = attachmentFileName;
+        this.attachmentContentType = attachmentContentType;
+        this.attachmentSize = attachmentSize;
+        this.attachmentData = attachmentData;
     }
 
     public String getId() {
         return id;
+    }
+
+    public String getSchoolId() {
+        return schoolId;
     }
 
     public String getAssignmentId() {
@@ -86,5 +113,21 @@ public class SubmissionEntity {
 
     public String getStatus() {
         return status;
+    }
+
+    public String getAttachmentFileName() {
+        return attachmentFileName;
+    }
+
+    public String getAttachmentContentType() {
+        return attachmentContentType;
+    }
+
+    public Long getAttachmentSize() {
+        return attachmentSize;
+    }
+
+    public byte[] getAttachmentData() {
+        return attachmentData;
     }
 }

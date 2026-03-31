@@ -5,8 +5,10 @@ import {
   AssignmentView,
   AttendanceView,
   DashboardResponse,
+  FileUploadPayload,
   LoginResponse,
   MessageView,
+  NotificationView,
   SubmissionView
 } from '../models/platform.models';
 import { AuthStateService } from './auth-state.service';
@@ -30,16 +32,31 @@ export class PlatformApiService {
     title: string;
     description: string;
     dueDate: string;
+    attachment: FileUploadPayload | null;
   }): Observable<AssignmentView> {
     return this.http.post<AssignmentView>(`${this.baseUrl}/assignments`, payload, { headers: this.authHeaders() });
   }
 
-  submitAssignment(assignmentId: string, content: string): Observable<SubmissionView> {
+  submitAssignment(assignmentId: string, payload: { content: string; attachment: FileUploadPayload | null }): Observable<SubmissionView> {
     return this.http.post<SubmissionView>(
       `${this.baseUrl}/assignments/${assignmentId}/submit`,
-      { content },
+      payload,
       { headers: this.authHeaders() }
     );
+  }
+
+  downloadAssignmentAttachment(assignmentId: string): Observable<Blob> {
+    return this.http.get(`${this.baseUrl}/assignments/${assignmentId}/attachment`, {
+      headers: this.authHeaders(),
+      responseType: 'blob'
+    });
+  }
+
+  downloadSubmissionAttachment(submissionId: string): Observable<Blob> {
+    return this.http.get(`${this.baseUrl}/submissions/${submissionId}/attachment`, {
+      headers: this.authHeaders(),
+      responseType: 'blob'
+    });
   }
 
   gradeSubmission(submissionId: string, payload: { score: number; feedback: string }): Observable<SubmissionView> {
@@ -67,6 +84,10 @@ export class PlatformApiService {
 
   createMessage(payload: { classId: string; parentId: string; subject: string; body: string }): Observable<MessageView> {
     return this.http.post<MessageView>(`${this.baseUrl}/messages`, payload, { headers: this.authHeaders() });
+  }
+
+  markNotificationRead(notificationId: string): Observable<NotificationView> {
+    return this.http.post<NotificationView>(`${this.baseUrl}/notifications/${notificationId}/read`, {}, { headers: this.authHeaders() });
   }
 
   private authHeaders(): HttpHeaders {

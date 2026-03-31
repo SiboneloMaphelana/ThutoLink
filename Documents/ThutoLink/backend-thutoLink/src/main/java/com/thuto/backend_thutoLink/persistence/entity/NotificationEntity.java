@@ -8,8 +8,8 @@ import jakarta.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "announcements")
-public class AnnouncementEntity {
+@Table(name = "notifications")
+public class NotificationEntity {
     @Id
     private String id;
 
@@ -17,10 +17,10 @@ public class AnnouncementEntity {
     private String schoolId;
 
     @Column(nullable = false)
-    private String classId;
+    private String recipientUserId;
 
     @Column(nullable = false)
-    private String teacherId;
+    private String type;
 
     @Column(nullable = false)
     private String title;
@@ -29,19 +29,31 @@ public class AnnouncementEntity {
     private String body;
 
     @Column(nullable = false)
-    private LocalDateTime sentAt;
+    private LocalDateTime createdAt;
 
-    public AnnouncementEntity() {
+    private LocalDateTime readAt;
+
+    public NotificationEntity() {
     }
 
-    public AnnouncementEntity(String id, String schoolId, String classId, String teacherId, String title, String body, LocalDateTime sentAt) {
+    public NotificationEntity(
+            String id,
+            String schoolId,
+            String recipientUserId,
+            String type,
+            String title,
+            String body,
+            LocalDateTime createdAt,
+            LocalDateTime readAt
+    ) {
         this.id = id;
         this.schoolId = schoolId;
-        this.classId = classId;
-        this.teacherId = teacherId;
+        this.recipientUserId = recipientUserId;
+        this.type = type;
         this.title = title;
         this.body = body;
-        this.sentAt = sentAt;
+        this.createdAt = createdAt;
+        this.readAt = readAt;
     }
 
     public String getId() {
@@ -52,12 +64,12 @@ public class AnnouncementEntity {
         return schoolId;
     }
 
-    public String getClassId() {
-        return classId;
+    public String getRecipientUserId() {
+        return recipientUserId;
     }
 
-    public String getTeacherId() {
-        return teacherId;
+    public String getType() {
+        return type;
     }
 
     public String getTitle() {
@@ -68,7 +80,11 @@ public class AnnouncementEntity {
         return body;
     }
 
-    public LocalDateTime getSentAt() {
-        return sentAt;
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getReadAt() {
+        return readAt;
     }
 }

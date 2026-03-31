@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ClassEnrollmentRepository extends JpaRepository<ClassEnrollmentEntity, String> {
-    List<ClassEnrollmentEntity> findByLearnerId(String learnerId);
+    List<ClassEnrollmentEntity> findAllBySchoolId(String schoolId);
 
-    List<ClassEnrollmentEntity> findByClassId(String classId);
+    List<ClassEnrollmentEntity> findByLearnerIdAndSchoolId(String learnerId, String schoolId);
+
+    List<ClassEnrollmentEntity> findByClassIdAndSchoolId(String classId, String schoolId);
 }

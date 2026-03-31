@@ -25,17 +25,29 @@
 
       <article class="glass-panel p-5 sm:p-6">
         <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-          <h2 class="section-title">Recent alerts</h2>
-          <app-icon name="warning" className="h-6 w-6 text-[color:var(--color-coral)]" />
+          <h2 class="section-title">Notification feed</h2>
+          <div class="flex items-center gap-3">
+            <span class="rounded-full bg-[color:var(--color-mint)] px-3 py-1 text-xs font-bold uppercase tracking-[0.18em] text-[color:var(--color-forest)]">
+              {{ state.unreadNotifications() }} unread
+            </span>
+            <app-icon name="notifications" className="h-6 w-6 text-[color:var(--color-forest)]" />
+          </div>
         </div>
 
         <div class="mt-6 space-y-3">
-          @for (alert of state.recentAlerts(); track alert.title + alert.date) {
-            <div class="rounded-[22px] bg-[#fff8f4] p-4">
-              <p class="font-semibold text-[color:var(--color-ink)]">{{ alert.title }}</p>
-              <p class="mt-2 text-sm text-slate-600">{{ alert.body }}</p>
-              <p class="mt-3 text-xs uppercase tracking-[0.18em] text-slate-400">{{ alert.date }}</p>
-            </div>
+          @for (notification of state.recentNotifications(); track notification.id) {
+            <article class="rounded-[22px] border border-slate-200 bg-white p-4">
+              <div class="flex items-start justify-between gap-4">
+                <div>
+                  <p class="font-semibold text-[color:var(--color-ink)]">{{ notification.title }}</p>
+                  <p class="mt-1 text-xs uppercase tracking-[0.18em] text-slate-400">{{ notification.type.replaceAll('_', ' ') }} • {{ notification.createdAt | date: 'medium' }}</p>
+                </div>
+                <span class="rounded-full px-3 py-2 text-xs font-bold uppercase tracking-[0.18em]" [class.bg-slate-100]="notification.read" [class.text-slate-500]="notification.read" [class.bg-[#fff8f4]]="!notification.read" [class.text-[color:var(--color-coral)]]="!notification.read">
+                  {{ notification.read ? 'Read' : 'Unread' }}
+                </span>
+              </div>
+              <p class="mt-3 text-sm text-slate-600">{{ notification.body }}</p>
+            </article>
           }
         </div>
       </article>

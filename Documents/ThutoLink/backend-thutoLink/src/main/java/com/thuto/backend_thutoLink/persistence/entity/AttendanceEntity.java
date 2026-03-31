@@ -14,6 +14,9 @@ public class AttendanceEntity {
     private String id;
 
     @Column(nullable = false)
+    private String schoolId;
+
+    @Column(nullable = false)
     private String classId;
 
     @Column(nullable = false)
@@ -31,8 +34,9 @@ public class AttendanceEntity {
     public AttendanceEntity() {
     }
 
-    public AttendanceEntity(String id, String classId, String teacherId, LocalDate date, LocalDateTime recordedAt) {
+    public AttendanceEntity(String id, String schoolId, String classId, String teacherId, LocalDate date, LocalDateTime recordedAt) {
         this.id = id;
+        this.schoolId = schoolId;
         this.classId = classId;
         this.teacherId = teacherId;
         this.date = date;
@@ -46,6 +50,10 @@ public class AttendanceEntity {
 
     public String getId() {
         return id;
+    }
+
+    public String getSchoolId() {
+        return schoolId;
     }
 
     public String getClassId() {

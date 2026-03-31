@@ -14,6 +14,9 @@ public class MessageEntity {
     private String id;
 
     @Column(nullable = false)
+    private String schoolId;
+
+    @Column(nullable = false)
     private String classId;
 
     @Column(nullable = false)
@@ -34,8 +37,9 @@ public class MessageEntity {
     public MessageEntity() {
     }
 
-    public MessageEntity(String id, String classId, String teacherId, String parentId, String subject, String body, LocalDateTime sentAt) {
+    public MessageEntity(String id, String schoolId, String classId, String teacherId, String parentId, String subject, String body, LocalDateTime sentAt) {
         this.id = id;
+        this.schoolId = schoolId;
         this.classId = classId;
         this.teacherId = teacherId;
         this.parentId = parentId;
@@ -46,6 +50,10 @@ public class MessageEntity {
 
     public String getId() {
         return id;
+    }
+
+    public String getSchoolId() {
+        return schoolId;
     }
 
     public String getClassId() {

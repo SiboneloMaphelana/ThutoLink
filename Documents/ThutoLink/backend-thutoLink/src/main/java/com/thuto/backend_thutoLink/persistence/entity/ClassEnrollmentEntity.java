@@ -12,6 +12,9 @@ public class ClassEnrollmentEntity {
     private String id;
 
     @Column(nullable = false)
+    private String schoolId;
+
+    @Column(nullable = false)
     private String learnerId;
 
     @Column(nullable = false)
@@ -20,14 +23,19 @@ public class ClassEnrollmentEntity {
     public ClassEnrollmentEntity() {
     }
 
-    public ClassEnrollmentEntity(String id, String learnerId, String classId) {
+    public ClassEnrollmentEntity(String id, String schoolId, String learnerId, String classId) {
         this.id = id;
+        this.schoolId = schoolId;
         this.learnerId = learnerId;
         this.classId = classId;
     }
 
     public String getId() {
         return id;
+    }
+
+    public String getSchoolId() {
+        return schoolId;
     }
 
     public String getLearnerId() {
